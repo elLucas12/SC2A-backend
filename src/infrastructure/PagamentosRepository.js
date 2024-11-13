@@ -1,21 +1,47 @@
 import { Injectable } from "@nestjs/common";
+import { validate } from "bycontract";
 import { IPagamentosRepository } from "../domain/repositories/IPagamentosRepository"
 import { PagamentoEntity } from "../domain/entities/PagamentoEntity";
-import { validate } from "bycontract";
+import { Observer } from "../domain/Observer";
 
 /**
  * Repositório de gerenciamento de dados de instâncias de pagamento.
  */
 @Injectable()
-export class PagamentosRepository {
+export class PagamentosRepository extends IPagamentosRepository {
     /**
      * Array de objetos "PagamentoEntity", representando as pagamentos armazenados no sistema.
      */
     #pagamentos;
 
+    /**
+     * Armazena os objetos que devem ser notificados em caso de alteração nos dados.
+     */
+    #observers;
+
     constructor() {
         super();
         this.#pagamentos = [];
+        this.#observers = [];
+    }
+
+    /**
+     * Registra as observadores devem ser notificados por esta instância de repo.
+     * 
+     * @param {Observer} observer Obj. observador desta instância.
+     */
+    registraObserver(observer) {
+        validate(observer, Observer);
+        this.#observers.push(observer);
+    }
+
+    /**
+     * Notifica os observadores registrado nesta instância sobre um pagamento.
+     * 
+     * @param {Number} codAssinatura Código da assinatura relacionada ao pagamento.
+     */
+    async notificaObservers(codAssinatura) {
+        this.#observers.forEach(obs => obs.notifica(codAssinatura));
     }
 
     /**

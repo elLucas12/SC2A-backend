@@ -32,7 +32,7 @@ export class AssinaturasRepository extends IRepository {
      * Atualiza os dados (substitui) de um Obj. assinatura presente no sistema.
      *
      * @param {AssinaturaEntity} assinatura Objeto de assinatura a ser substituido.
-     * @return 'true' em caso de sucesso e 'false' caso index não exista na memória.
+     * @returns 'true' em caso de sucesso e 'false' caso index não exista na memória.
      */
     atualizar(assinatura) {
         validate(assinatura, AssinaturaEntity);
@@ -49,7 +49,7 @@ export class AssinaturasRepository extends IRepository {
      * Remove uma instância de assinatura presente na memória do sistema.
      *
      * @param {Number} codigo Código da assinatura a ser removida da memória.
-     * @return 'true' em caso de sucesso e 'false' caso não seja encontrado em mem.
+     * @returns 'true' em caso de sucesso e 'false' caso não seja encontrado em mem.
      */
     remover(codigo) {
         for (let i = 0; i < this.#assinaturas.length; i++) {
@@ -65,7 +65,7 @@ export class AssinaturasRepository extends IRepository {
      * Consulta na memória do sistema a existência de uma assinatura.
      *
      * @param {Number} codigo Código da assinatura a ser consultada.
-     * @return Objeto de assinatura baseado no código e 'undefined' em caso de falha.
+     * @returns Objeto de assinatura baseado no código e 'undefined' em caso de falha.
      */
     consultar(codigo) {
         return this.#assinaturas.find((item) => item.codigo === codigo);
