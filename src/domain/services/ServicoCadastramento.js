@@ -2,16 +2,25 @@ import { Injectable, Dependencies } from "@nestjs/common";
 import { validate } from "bycontract";
 import { Observer } from "../Observer";
 import { AssinaturasRepository } from "../../infrastructure/AssinaturasRepository";
-import { IRepository } from "../repositories/IRepository";
+import { ClientesRepository } from "../../infrastructure/ClientesRepository";
+import { AplicativosRepository } from "../../infrastructure/AplicativosRepository";
+import { UsuariosRepository } from "../../infrastructure/UsuariosRepository";
+// import { IRepository } from "../repositories/IRepository";
 
 @Injectable()
-@Dependencies(AssinaturasRepository)
+@Dependencies(AssinaturasRepository, ClientesRepository, AplicativosRepository, UsuariosRepository)
 export class ServicoCadastramento extends Observer {
     #assinaturasRepository;
+    #clientesRepository;
+    #aplicativosRepository;
+    #usuariosRepository;
 
-    constructor(assinaturasRepository) {
+    constructor(assinaturasRepository, clienteRepository, aplicativosRepository, usuariosRepository) {
         super();
         this.#assinaturasRepository = assinaturasRepository;
+        this.#clientesRepository = clienteRepository;
+        this.#aplicativosRepository = aplicativosRepository;
+        this.#usuariosRepository = usuariosRepository;
     }
 
     /**
@@ -74,6 +83,4 @@ export class ServicoCadastramento extends Observer {
 
         return true;
     }
-
-    
 }
