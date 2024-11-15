@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { IRepository } from "../domain/repositories/IRepository";
+import { IRepositoryMem } from "../domain/repositories/IRepositoryMem";
 import { ClienteEntity } from "../domain/entities/ClienteEntity";
 import { validate } from "bycontract";
 
@@ -7,7 +7,7 @@ import { validate } from "bycontract";
  * Repositório de gerenciamento de dados em memória de clientes dentro do sistema.
  */
 @Injectable()
-export class ClientesRepository extends IRepository {
+export class ClientesRepository extends IRepositoryMem {
     /**
      * Array de objetos "ClienteEntity", representando os clientes dentro no sistema.
      */

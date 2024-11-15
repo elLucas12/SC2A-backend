@@ -3,12 +3,19 @@ import { validate } from "bycontract";
 import { Observer } from "../Observer";
 import { AssinaturasRepository } from "../../infrastructure/AssinaturasRepository";
 import { ClientesRepository } from "../../infrastructure/ClientesRepository";
-import { AplicativosRepository } from "../../infrastructure/AplicativosRepository";
 import { UsuariosRepository } from "../../infrastructure/UsuariosRepository";
-// import { IRepository } from "../repositories/IRepository";
+import { AplicativosRepositoryORM } from "../../infrastructure/AplicativosRepositoryORM";
 
+/**
+ * Serviço de manunteção de cadastros e de operações relativas à cobrança.
+ */
 @Injectable()
-@Dependencies(AssinaturasRepository, ClientesRepository, AplicativosRepository, UsuariosRepository)
+@Dependencies(
+    AssinaturasRepository, 
+    ClientesRepository, 
+    AplicativosRepositoryORM, 
+    UsuariosRepository
+)
 export class ServicoCadastramento extends Observer {
     #assinaturasRepository;
     #clientesRepository;

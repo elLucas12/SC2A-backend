@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { validate } from "bycontract";
-import { IPagamentosRepository } from "../domain/repositories/IPagamentosRepository"
+import { IPagamentosRepositoryMem } from "../domain/repositories/IPagamentosRepositoryMem";
 import { PagamentoEntity } from "../domain/entities/PagamentoEntity";
 import { Observer } from "../domain/Observer";
 
@@ -8,7 +8,7 @@ import { Observer } from "../domain/Observer";
  * Repositório de gerenciamento de dados de instâncias de pagamento.
  */
 @Injectable()
-export class PagamentosRepository extends IPagamentosRepository {
+export class PagamentosRepository extends IPagamentosRepositoryMem {
     /**
      * Array de objetos "PagamentoEntity", representando as pagamentos armazenados no sistema.
      */

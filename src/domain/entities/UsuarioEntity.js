@@ -3,7 +3,7 @@
  *
  * Representa uma instância de usuário presente no sistema.
  */
-export class Usuario {
+export class UsuarioEntity {
     usuario;
     senha;
 

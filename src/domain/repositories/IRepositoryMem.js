@@ -1,8 +1,9 @@
 /**
  * Interface utilizada para generalizar os repositories utilizados pelo
- * objeto "ServicoCadastramento" dentro do contexto de contrução Factory.
+ * objeto "ServicoCadastramento" - os repositórios de gerenciamento apenas em
+ * memória (VOLÁTIL).
  */
-export class IRepository {
+export class IRepositoryMem {
     adicionar() {}
     atualizar() {}
     remover() {}

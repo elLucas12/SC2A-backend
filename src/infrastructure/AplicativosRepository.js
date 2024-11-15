@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common"
-import { IRepository } from "../domain/repositories/IRepository";
+import { IRepositoryMem } from "../domain/repositories/IRepositoryMem";
 import { AplicativoEntity } from "../domain/entities/AplicativoEntity";
 import { validate } from "bycontract";
 
@@ -7,7 +7,7 @@ import { validate } from "bycontract";
  * Repositório de gerenciamento de dados em memória dos aplicativos do sistema.
  */
 @Injectable()
-export class AplicativosRepository extends IRepository {
+export class AplicativosRepository extends IRepositoryMem {
     /**
      * Array de objetos "AplicativoEntity", representando as aplicativos armazenadas no sistema.
      */

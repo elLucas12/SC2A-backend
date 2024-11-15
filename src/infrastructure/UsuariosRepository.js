@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { IRepository } from "../domain/repositories/IRepository";
+import { IRepositoryMem } from "../domain/repositories/IRepositoryMem";
 import { UsuarioEntity } from "../domain/entities/UsuarioEntity";
 import { validate } from "bycontract";
 
@@ -7,7 +7,7 @@ import { validate } from "bycontract";
  * Repositório de gerenciamento de dados referentes aos usuários do sistema.
  */
 @Injectable()
-export class UsuariosRepository extends IRepository {
+export class UsuariosRepository extends IRepositoryMem {
     /**
      * Array de objetos "Entity", representando os usuários do sistema de usuarios.
      */

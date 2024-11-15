@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common"
-import { IRepository } from "../domain/repositories/IRepository";
+import { IRepositoryMem } from "../domain/repositories/IRepositoryMem";
 import { AssinaturaEntity } from "../domain/entities/AssinaturaEntity";
 import { validate } from "bycontract";
 
@@ -7,7 +7,7 @@ import { validate } from "bycontract";
  * Repositório de gerenciamento de dados em memória das assinaturas de aplicativos.
  */
 @Injectable()
-export class AssinaturasRepository extends IRepository {
+export class AssinaturasRepository extends IRepositoryMem {
     /**
      * Array de objetos "AssinaturaEntity", representando as assinaturas armazenadas no sistema.
      */

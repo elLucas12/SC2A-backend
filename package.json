@@ -1,10 +1,10 @@
 {
   "name": "sc2a",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Back-end do Sistema de Controle de Assinaturas de Aplicativos",
+  "author": "elLucas12",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "BSD-3-Clause",
   "scripts": {
     "format": "prettier --write \"**/*.js\"",
     "start": "babel-node index.js",
@@ -17,9 +17,12 @@
     "@nestjs/common": "^10.0.0",
     "@nestjs/core": "^10.0.0",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/typeorm": "^10.0.2",
     "bycontract": "^2.0.11",
+    "mysql2": "^3.11.4",
     "reflect-metadata": "^0.2.0",
-    "rxjs": "^7.2.0"
+    "rxjs": "^7.2.0",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
     "@babel/core": "7.26.0",

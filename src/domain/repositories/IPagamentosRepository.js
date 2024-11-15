@@ -1,6 +1,7 @@
-import { IRepository } from "./IRepository";
-
-export class IPagamentosRepository extends IRepository {
-    registraObserver(observer) {}
-    notificaObservers() {}
+export class IPagamentosRepository {
+    registrar() {}
+    deletar() {}
+    todos() {}
+    registrarObserver(observer) {}
+    notificarObserver(codAssinatura) {}
 }
