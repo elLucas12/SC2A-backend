@@ -29,7 +29,8 @@ export class AplicativosRepositoryORM extends IAplicativosRepository {
      * @return Status de sucesso da ação.
      */
     async registrar(aplicativo) {
-        return await this.#aplicativos.save(aplicativo);
+        const resp = await this.#aplicativos.save(aplicativo);
+        return AplicativosRepositoryORM.createFromObject(resp);
     }
 
     /**
@@ -59,8 +60,29 @@ export class AplicativosRepositoryORM extends IAplicativosRepository {
      * @return Lista/Unidade de obj. consultado.
      */
     async consultarPorCodigo(codigo) {
-        const resp = await this.#aplicativos.find((item) => item.codigo === codigo);
+        const resp = await this.#aplicativos.findOneBy({codigo});
         return resp.map(AplicativosRepositoryORM.createFromObject);
+    }
+
+    /**
+     * Atualiza o custo mensal de um aplicativo registrado no banco através do código.
+     * 
+     * @param {Number} codigo Referência do aplicativo a ser alterado.
+     * @param {Number} custo Novo custo para o aplicativo.
+     * @return Obj. de entidade Aplicativo alterada.
+     */
+    async atualizarCusto(codigo, custo) {
+        let resp = await this.#aplicativos
+            .createQueryBuilder()
+            .update(AplicativoEntityORM)
+            .set({
+                custoMensal: custo
+            })
+            .where({
+                codigo: codigo
+            })
+            .execute();
+        return AplicativosRepositoryORM.createFromObject(resp);
     }
 
     /**

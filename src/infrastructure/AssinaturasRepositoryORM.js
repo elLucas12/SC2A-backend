@@ -8,6 +8,15 @@ import { AplicativoEntity } from "../domain/entities/AplicativoEntity";
 import { ClienteEntity } from "../domain/entities/ClienteEntity";
 
 /**
+ * Representa o tipo de assinatura dentro do contexto de válidade das regras de negócio.
+ */
+export const TipoConsultaAssinatura = {
+    TODAS: Symbol('todas'),
+    ATIVAS: Symbol('ativas'),
+    CANCELADAS: Symbol('canceladas')
+};
+
+/**
  * Repositório de gerenciamento de dados das assinaturas armazenadas no banco do sistema por
  * meio de ORM.
  *
@@ -30,11 +39,12 @@ export class AssinaturasRepositoryORM extends IAssinaturasRepository {
     /**
      * Registra uma instância de assinatura no banco.
      * 
-     * @param {AssinaturaEntityORM} assiantura Objeto da entidade Assinatura a ser armazenada.
-     * @return Status de sucesso da ação.
+     * @param {AssinaturaEntityORM} assinatura Objeto da entidade Assinatura a ser armazenada.
+     * @return Objeto Assinatura construido (AssinaturaEntity).
      */
     async registrar(assinatura) {
-        return await this.#assinaturas.save(assinatura);
+        const resp = await this.#assinaturas.save(assinatura);
+        return AssinaturasRepositoryORM.createFromObject(resp);
     }
 
     /**
@@ -54,6 +64,66 @@ export class AssinaturasRepositoryORM extends IAssinaturasRepository {
      */
     async todos() {
         const resp = await this.#assinaturas.find();
+        return resp.map(AssinaturasRepositoryORM.createFromObject);
+    }
+
+    /**
+     * Consulta uma Assinatura através do código da mesma no banco.
+     * 
+     * @param {Number} codigo Referência chave da assinatura
+     * @returns Obj. AssinaturaEntity pesquisado.
+     */
+    async consultarPorCodigo(codigo) {
+        const resp = await this.#assinaturas.findOneBy({codigo});
+        return AssinaturasRepositoryORM.createFromObject(resp);
+    }
+
+    /**
+     * Consulta todas as assinaturas presentes no sistemas conforme o tipo passado.
+     * 
+     * @param {TipoConsultaAssinatura} tipo Tipo de assinatura a ser consultada.
+     * @return Obj. com todas as assinaturas conforme o tipo ou 'undefined' caso tipo != TipoConsulta.
+     */
+    async consultarPorTipo(tipo) {
+        let resp;
+        switch (tipo) {
+            case TipoAssinatura.TODAS:
+                return this.todos();
+            case TipoAssinatura.ATIVAS:
+                resp = this.#assinaturas.find(
+                    (item) => new Date(item.fimVigencia).getTime() > new Date().getTime()
+                );
+                break;
+            case TipoAssinatura.CANCELADAS:
+                resp = this.#assinaturas.find(
+                    (item) => new Date(item.fimVigencia).getTime() <= new Date().getTime()
+                );
+                break;
+            default:
+                return undefined;
+        }
+        return resp.map(AssinaturasRepositoryORM.createFromObject);
+    }
+
+    /**
+     * Consulta e retorna todas as assinaturas referentes ao cliente passado.
+     * 
+     * @param {Number} codigo Código de referência do cliente.
+     * @return Objeto com todas as assinaturas do cliente.
+     */
+    async consultarPorCliente(codigo) {
+        const resp = this.#assinaturas.find((item) => item.codCli.codigo === codigo);
+        return resp.map(AssinaturasRepositoryORM.createFromObject);
+    }
+
+    /**
+     * Consulta e retorna todas as assinaturas referentes ao aplicativo passado.
+     * 
+     * @param {Number} codigo Código de referência do aplicativo.
+     * @return Objeto com todas as assinaturas do aplicativo.
+     */
+    async consultarPorAplicativo(codigo) {
+        const resp = this.#assinaturas.find((item) => item.codApp.codigo === codigo);
         return resp.map(AssinaturasRepositoryORM.createFromObject);
     }
 

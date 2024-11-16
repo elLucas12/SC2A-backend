@@ -1,11 +1,39 @@
 import { Controller, Dependencies, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { ClientesCadastrados_UC } from './aplication/ClientesCadastrados';
+import { AplicativosCadastrados_UC } from './aplication/AplicativosCadastrados';
+import { RegistraAssinatura_UC } from './aplication/RegistraAssinatura';
+import { AtualizaCusto_UC } from './aplication/AtualizaCusto';
+import { AssinaturasVigentes_UC } from './aplication/AssinaturasVigentes';
+import { AssinaturasClientes_UC } from './aplication/AssinaturasClientes';
+import { AssinaturasAplicativo_UC } from './aplication/AssinaturasAplicativo';
 
 @Controller()
-@Dependencies(AppService)
+@Dependencies(
+    ClientesCadastrados_UC, 
+    AplicativosCadastrados_UC,
+    RegistraAssinatura_UC,
+    AtualizaCusto_UC,
+    AssinaturasVigentes_UC,
+    AssinaturasClientes_UC,
+    AssinaturasAplicativo_UC
+)
 export class AppController {
-    constructor(appService) {
-        this.appService = appService;
+    constructor(
+        clientesCadastradosUC, 
+        aplicativosCadastradosUC, 
+        registraAssinaturaUC, 
+        atualizaCustoUC,
+        assinaturasVigentesUC,
+        assinaturasClientesUC,
+        assinaturasAplicativoUC
+    ) {
+        this.clientesCadastradosUC = clientesCadastradosUC;
+        this.aplicativosCadastradosUC = aplicativosCadastradosUC;
+        this.registraAssinaturaUC = registraAssinaturaUC;
+        this.atualizaCustoUC = atualizaCustoUC;
+        this.assinaturasVigentesUC = assinaturasVigentesUC;
+        this.assinaturasClientesUC = assinaturasClientesUC;
+        this.assinaturasAplicativoUC = assinaturasAplicativoUC;
     }
 
     /**
@@ -15,7 +43,7 @@ export class AppController {
      */
     @Get('servcad/clientes')
     getClientesCadastrados() {
-        return "<h1>Lista com todos os clientes cadastrados</h1>";
+        return this.clientesCadastradosUC.run();
     }
 
     /**
@@ -25,7 +53,7 @@ export class AppController {
      */
     @Get('servcad/aplicativos')
     getAplicativosCadastrados() {
-        return "<h1>Lista com todos os aplicativos cadastrados</h1>";
+        return this.aplicativosCadastradosUC.run();
     }
 
     /**
@@ -41,7 +69,7 @@ export class AppController {
     @Post('servcad/assinaturas')
     @Bind(Body())
     postCriaAssinatura(dados) {
-        return "<h1>Cadastro Novo para - Cód. Cliente " + dados.codCliente + "; Cód. App. " + dados.codApp + "</h1>";
+        return this.registraAssinaturaUC.run(dados);
     }
 
     /**
@@ -58,7 +86,7 @@ export class AppController {
     @Bind(Param())
     @Bind(Body())
     patchAtualizaCustoAplicativo(param, dados) {
-        return "<h1>Custo mensal do App " + param.idAplicativo + " atualizado para - " + dados.custo + "</h1>";
+        return this.atualizaCustoUC.run(param.idAplicativo, dados.custo);
     }
 
     /**
@@ -77,7 +105,7 @@ export class AppController {
     @Get('servcad/assinaturas/:tipo')
     @Bind(Param())
     getAssinaturasVigentes(param) {
-        return "<h1>Lista de assinaturas do tipo " + param.tipo + "</h1>";
+        return this.assinaturasVigentesUC.run(param.tipo);
     }
 
     /**
@@ -92,7 +120,7 @@ export class AppController {
     @Get('servcad/asscli/:codcli')
     @Bind(Param())
     getAssinaturasCliente(param) {
-        return "<h1>Lista de assinaturas do cliente " + param.codcli + "</h1>";
+        return this.assinaturasClientesUC.run(param.codcli);
     }
 
     /**
@@ -107,6 +135,6 @@ export class AppController {
     @Get('servcad/assapp/:codapp')
     @Bind(Param())
     getAssinaturasAplicativo(param) {
-        return "<h1>Lista de assinaturas do aplicativo " + param.codapp + "</h1>";
+        return this.assinaturasAplicativoUC.run(param.codApp);
     }
 }

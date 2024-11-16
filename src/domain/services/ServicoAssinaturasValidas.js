@@ -17,7 +17,7 @@ export class ServicoAssinaturasValidas extends Observer {
      * @param {Number} codAssinatura Código referente a instância de assinatura.
      */
     notifica(codAssinatura) {
-        this.#cache.map((item) => codAssinatura !== item.codAssinatura);
+        //this.#cache.map((item) => codAssinatura !== item.codAssinatura);
     }
 
     isAssinaturaValida(codigo) {

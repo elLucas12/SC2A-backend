@@ -1,20 +1,19 @@
 import { Injectable, Dependencies } from "@nestjs/common";
-import { validate } from "bycontract";
 import { Observer } from "../Observer";
-import { AssinaturasRepository } from "../../infrastructure/AssinaturasRepository";
-import { ClientesRepository } from "../../infrastructure/ClientesRepository";
-import { UsuariosRepository } from "../../infrastructure/UsuariosRepository";
 import { AplicativosRepositoryORM } from "../../infrastructure/AplicativosRepositoryORM";
+import { AssinaturasRepositoryORM } from "../../infrastructure/AssinaturasRepositoryORM";
+import { ClientesRepositoryORM } from "../../infrastructure/ClientesRepositoryORM";
+import { UsuariosRepositoryORM } from "../../infrastructure/UsuariosRepositoryORM";
 
 /**
  * Serviço de manunteção de cadastros e de operações relativas à cobrança.
  */
 @Injectable()
 @Dependencies(
-    AssinaturasRepository, 
-    ClientesRepository, 
+    AssinaturasRepositoryORM, 
+    ClientesRepositoryORM, 
     AplicativosRepositoryORM, 
-    UsuariosRepository
+    UsuariosRepositoryORM
 )
 export class ServicoCadastramento extends Observer {
     #assinaturasRepository;
@@ -43,51 +42,72 @@ export class ServicoCadastramento extends Observer {
     }
 
     /**
-     * Atualiza as informações de preço de uma assinatura.
+     * Retorna todos os clientes cadastrados no sistema.
      * 
-     * @param {Number} codigo Código da assinatura a ter o preço atualizada.
-     * @param {Number} preco Preço atualizado da assinatura.
-     * @returns 'true' em caso de sucesso e 'false' em caso de falha na atualização.
+     * @return Obj. com os clientes cadastrados.
      */
-    atualizaPrecoAssinatura(codigo, preco) {
-        validate(arguments, ["Number", "Number"]);
-
-        // Consultando assinatura no repo.
-        let assinaturaTarget = this.#assinaturasRepository.consultar(codigo);
-        if (typeof(assinaturaTarget) === undefined) 
-            return false;
-
-        // Atualizando valor
-        assinaturaTarget.preco = preco;
-        if (this.#assinaturasRepository.atualizar(assinaturaTarget)) {
-            return false;
-        }
-
-        return true;
+    async clientesCadastrados() {
+        return this.#clientesRepository.todos();
     }
 
     /**
-     * Atualiza o estado de válidade de uma assinatura presente no banco do sistema.
+     * Retorna todos os aplicativos cadastrados no sistema.
      * 
-     * @param {Number} codigo Código identificador da assinatura.
-     * @param {Boolean} validade Booleano indicador de estado de válidade da assinatura.
-     * @returns 'true' em caso de sucesso na troca de válidade e 'false' em caso de falha.
+     * @return Objeto com todos os aplicativos cadastrados.
      */
-    atualizaValidadeAssinatura(codigo, validade) {
-        validate(arguments, ["Number", "Boolean"]);
+    async aplicativosCadastrados() {
+        return this.#aplicativosRepository.todos();
+    }
 
-        // Consultando no repo.
-        let assinaturaTarget = this.#assinaturasRepository.consultar(codigo);
-        if (typeof(assinaturaTarget) === undefined) {
-            return false;
-        }
+    /**
+     * Registra uma instância de assinatura no sistema.
+     * 
+     * @param {AssinaturaEntityORM} assinatura Obj. de assinatura para registro.
+     * @return Obj. de entidade Assinatura construido (AssinaturaEntity).
+     */
+    async criarAssinatura(assinatura) {
+        return this.#assinaturasRepository.registrar(assinatura);
+    }
 
-        // Atualizando informação de validade
-        assinaturaTarget.validade = validade;
-        if (this.#assinaturasRepository.atualizar(assinaturaTarget)) {
-            return false;
-        }
+    /**
+     * Procura e altera o custo mensal de um aplicativo registrado no sistema através
+     * de seu código de referência.
+     * 
+     * @param {Number} codigo Código de referência do aplicativo.
+     * @param {Number} custo Custo novo a ser definido.
+     * @return Obj. AplicativoEntity da instância atualizada.
+     */
+    async atualizarCusto(codigo, custo) {
+        return this.#aplicativosRepository.atualizarCusto(codigo, custo);
+    }
 
-        return true;
+    /**
+     * Consulta todas as assinaturas presentes no sistemas conforme o tipo passado.
+     * 
+     * @param {TipoConsultaAssinatura} tipo Tipo de assinatura a ser consultada.
+     * @return Obj. com todas as assinaturas conforme o tipo.
+     */
+    async assinaturasTipo(tipo) {
+        return this.#assinaturasRepository.consultarPorTipo(tipo);
+    }
+
+    /**
+     * Consulta todas as assinaturas do cliente presentes no banco de dados do sistema.
+     * 
+     * @param {Number} codigo Referência do cliente no banco.
+     * @return Objeto de representação das assinaturas do cliente.
+     */
+    async assinaturasCliente(codigo) {
+        return this.#assinaturasRepository.consultarPorCliente(codigo);
+    }
+
+    /**
+     * Consulta todas as assinaturas do aplicativo presentes no banco de dados do sistema.
+     * 
+     * @param {Number} codigo Referência do aplicativo no banco.
+     * @return Objeto de representação dos aplicativos relacionados.
+     */
+    async assinaturasAplicativo(codigo) {
+        return this.#assinaturasRepository.consultarPorAplicativo(codigo);
     }
 }
