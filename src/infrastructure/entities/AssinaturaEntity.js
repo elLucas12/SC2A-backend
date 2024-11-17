@@ -1,5 +1,8 @@
 import { Entity } from "typeorm";
-import { Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, ManyToOne, PrimaryGeneratedColumn, JoinColumn, OneToMany } from "typeorm";
+import { AplicativoEntityORM } from "./AplicativoEntity";
+import { ClienteEntityORM } from "./ClienteEntity";
+import { PagamentoEntityORM } from "./PagamentoEntity";
 
 /**
  * Classe espelho da classe AssinaturaEntity para acesso e armazenamento de dados
@@ -9,16 +12,12 @@ export class AssinaturaEntityORM {
     @PrimaryGeneratedColumn('int')
     codigo;
 
-    @ManyToOne(() => Aplicativo, {
-        eager: true,        // Sempre deve ser carregado junto
-        nullable: false     // Pode ser null
-    })
+    @ManyToOne(type => AplicativoEntityORM, {eager: true, nullable: false})
+    @JoinColumn()
     codApp;
 
-    @ManyToOne(() => Cliente, {
-        eager: true,
-        nullable: false
-    })
+    @ManyToOne(type => ClienteEntityORM, (cliente) => cliente.assinatura, {eager: true, nullable: false})
+    @JoinColumn()
     codCli;
 
     @Column('date')
@@ -26,4 +25,8 @@ export class AssinaturaEntityORM {
 
     @Column('date')
     fimVigencia;
+
+    @OneToMany(type => PagamentoEntityORM, (pagamento) => pagamento.codAssinatura)
+    @JoinColumn()
+    pagamento;
 }

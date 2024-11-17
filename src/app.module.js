@@ -8,13 +8,13 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { AplicativoEntityORM } from './infrastructure/entities/AplicativoEntity';
-import { AplicativosRepositoryORM } from './infrastructure/AplicativosRepositoryORM';
 import { AssinaturaEntityORM } from './infrastructure/entities/AssinaturaEntity';
 import { ClienteEntityORM } from './infrastructure/entities/ClienteEntity';
 import { UsuarioEntityORM } from './infrastructure/entities/UsuarioEntity';
 import { PagamentoEntityORM } from './infrastructure/entities/PagamentoEntity';
 
 import { AssinaturasRepositoryORM } from './infrastructure/AssinaturasRepositoryORM';
+import { AplicativosRepositoryORM } from './infrastructure/AplicativosRepositoryORM';
 import { ClientesRepositoryORM } from './infrastructure/ClientesRepositoryORM';
 import { UsuariosRepositoryORM } from './infrastructure/UsuariosRepositoryORM';
 import { PagamentosRepositoryORM } from './infrastructure/PagamentosRepositoryORM';

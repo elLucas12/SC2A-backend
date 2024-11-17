@@ -1,4 +1,4 @@
-import { Controller, Dependencies, Get } from '@nestjs/common';
+import { Controller, Dependencies, Get, Post, Patch, Bind, Body, Param } from '@nestjs/common';
 import { ClientesCadastrados_UC } from './aplication/ClientesCadastrados';
 import { AplicativosCadastrados_UC } from './aplication/AplicativosCadastrados';
 import { RegistraAssinatura_UC } from './aplication/RegistraAssinatura';
