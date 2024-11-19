@@ -1,5 +1,5 @@
 import { validate } from "bycontract";
-import { Injectable, Dependencies } from "@nestjs/common";
+import { Injectable, Dependencies, BadRequestException } from "@nestjs/common";
 import { ServicoCadastramento } from "../domain/services/ServicoCadastramento";
 
 @Injectable()
@@ -14,10 +14,14 @@ export class AtualizaCusto_UC {
 
     async run(codigo, custo) {
         const aplicativo = await this.#servicoCadastramento.atualizarCusto(codigo, custo);
-        return {
-            codigo: aplicativo.codigo,
-            nome: aplicativo.nome,
-            custoMensal: aplicativo.custoMensal
-        };
+        if (aplicativo === undefined) {
+            throw new BadRequestException('Cadastro de aplicativo não encontrado!');
+        } else {
+            return {
+                codigo: aplicativo.codigo,
+                nome: aplicativo.nome,
+                custoMensal: aplicativo.custoMensal
+            };
+        }
     }
 }

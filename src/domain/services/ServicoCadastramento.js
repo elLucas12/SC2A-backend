@@ -1,9 +1,9 @@
 import { Injectable, Dependencies } from "@nestjs/common";
+import { AssinaturasRepositoryORM } from "../../adaptInterface/Persistence/Repositories/AssinaturasORM.repository";
+import { ClientesRepositoryORM } from "../../adaptInterface/Persistence/Repositories/ClientesORM.repository";
+import { AplicativosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/AplicativosORM.repository";
+import { UsuariosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/UsuariosORM.repository";
 import { Observer } from "../Observer";
-import { AplicativosRepositoryORM } from "../../infrastructure/AplicativosRepositoryORM";
-import { AssinaturasRepositoryORM } from "../../infrastructure/AssinaturasRepositoryORM";
-import { ClientesRepositoryORM } from "../../infrastructure/ClientesRepositoryORM";
-import { UsuariosRepositoryORM } from "../../infrastructure/UsuariosRepositoryORM";
 
 /**
  * Serviço de manunteção de cadastros e de operações relativas à cobrança.
@@ -35,9 +35,9 @@ export class ServicoCadastramento extends Observer {
      * Fundamentalmente, realiza-se verificações de existência da assinatura e 
      * altera-se a válidade da mesma conforme pagamento.
      * 
-     * @param {Number} codAssinatura Código de assinatura relacionada ao pagamento.
+     * @param {Number} assinatura Código de assinatura relacionada ao pagamento.
      */
-    notifica(codAssinatura) {
+    notifica(assinatura) {
         
     }
 
@@ -109,5 +109,35 @@ export class ServicoCadastramento extends Observer {
      */
     async assinaturasAplicativo(codigo) {
         return this.#assinaturasRepository.consultarPorAplicativo(codigo);
+    }
+
+    /**
+     * Registra um cliente no sistema.
+     * 
+     * @param {Cliente} cliente Objeto modelo para criação de entidade Cliente.
+     * @return Objeto modelo da entidade criada.
+     */
+    async criarCliente(cliente) {
+        return this.#clientesRepository.registrar(cliente);
+    }
+
+    /**
+     * Registra um usuário no sistema.
+     * 
+     * @param {Usuario} usuario Objeto modelo para criação de entidade Usuario.
+     * @return Objeto modelo da entidade criada.
+     */
+    async criarUsuario(usuario) {
+        return this.#usuariosRepository.registrar(usuario);
+    }
+
+    /**
+     * Registra um aplicativo no sistema.
+     * 
+     * @param {Aplicativo} aplicativo Objeto modelo para criação da entidade Aplicativo.
+     * @return Objeto modelo da entidade criada.
+     */
+    async criarAplicativo(aplicativo) {
+        return this.#aplicativosRepository.registrar(aplicativo);
     }
 }

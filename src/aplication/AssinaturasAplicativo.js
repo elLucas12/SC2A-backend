@@ -17,8 +17,16 @@ export class AssinaturasAplicativo_UC {
         return assinaturasAplicativo.map((item) => {
             return {
                 codigo: item.codigo,
-                codApp: item.codApp.codigo,
-                codCli: item.codCli.codigo,
+                aplicativo: {
+                    codigo: item.aplicativo.codigo,
+                    nome: item.aplicativo.nome,
+                    custoMensal: item.aplicativo.custoMensal
+                },
+                cliente: {
+                    codigo: item.cliente.codigo,
+                    nome: item.cliente.nome,
+                    email: item.cliente.email
+                },
                 inicioVigencia: item.inicioVigencia,
                 fimVigencia: item.fimVigencia
             }

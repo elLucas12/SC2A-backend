@@ -1,5 +1,5 @@
 import { validate } from "bycontract";
-import { Injectable, Dependencies } from "@nestjs/common";
+import { Injectable, Dependencies, BadRequestError } from "@nestjs/common";
 import { ServicoCadastramento } from "../domain/services/ServicoCadastramento";
 
 @Injectable()
@@ -18,21 +18,33 @@ export class RegistraAssinatura_UC {
         let dateAuxPlus = new Date(dateAux);
         dateAuxPlus.setDate(dateAuxPlus.getDate() + 37);
 
+        // Verificando se datas foram passadas por parâmetro
+        if (dados.fimVigencia) {
+            dateAuxPlus = new Date(dados.fimVigencia);
+        }
+        if (dados.inicioVigencia) {
+            dateAux = new Date(dados.inicioVigencia);
+        }
+
         // Registrando assinatura no sistema
         let assinatura = await this.#servicoCadastramento.criarAssinatura({
-            codCli: dados.codCli,
-            codApp: dados.codApp,
-            inicioVigencia: dateAux.toISOString(),
-            fimVigencia: dateAuxPlus.toISOString()
+            cliente: dados.cliente,
+            aplicativo: dados.aplicativo,
+            inicioVigencia: dateAux.toJSON().slice(0, 19).replace('T', ' '),
+            fimVigencia: dateAuxPlus.toJSON().slice(0, 19).replace('T', ' ')
         });
 
         // Retornando no formato correto
-        return {
-            codigo: assinatura.codigo,
-            codApp: assinatura.codApp.codigo,
-            codCli: assinatura.codCli.codigo,
-            inicioVigencia: assinatura.inicioVigencia,
-            fimVigencia: assinatura.fimVigencia
-        };
+        if (assinatura === undefined) {
+            throw new BadRequestError('Tipo de consulta de assinatura inválida!');
+        } else {
+            return {
+                codigo: assinatura.codigo,
+                aplicativo: assinatura.aplicativo.codigo,
+                cliente: assinatura.cliente.codigo,
+                inicioVigencia: assinatura.inicioVigencia,
+                fimVigencia: assinatura.fimVigencia
+            };
+        }
     }
 }

@@ -1,6 +1,7 @@
-# SC2A - Backend
+# SC2A - Módulo Backend
 
-Código do módulo _backend_ do Sistema de Controle de Assinaturas de Aplicativos, baseado na lógica de validação de aplicativos de celular.
+Código do módulo _backend_ do Sistema de Controle de Assinaturas de Aplicativos, baseado
+na lógica de validação de aplicativos de celular.
 
 ## Instalação de Dependências
 
