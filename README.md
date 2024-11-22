@@ -9,18 +9,22 @@ na lógica de validação de aplicativos de celular.
 $ npm install
 ```
 
-## Rodando a Aplicação
+## Rodando a API
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-npm run start:prod
+$ npm start
 ```
+
+### Populando o Banco de Dados
+
+Para popular o banco de dados é necessário executar o seguinte comando:
+
+```bash
+$ npm run startup-requests
+```
+
+> O comando deve ser executado em paralelo com a API (`npm start` para dev., ou outra instância de produção).
 
 ## Testes
 
