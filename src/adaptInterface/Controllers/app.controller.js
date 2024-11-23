@@ -49,6 +49,10 @@ export class AppController {
         this.registraAplicativoUC = registraAplicativoUC;
     }
 
+    /////////////////////////
+    // ENDPOINTS DA FASE 1 //
+    /////////////////////////
+
     /**
      * Retorna uma lista com todos os clientes cadastrados.
      *
@@ -199,4 +203,10 @@ export class AppController {
     async postCriaUsuario(dados) {
         return this.registraAplicativoUC.run(dados);
     }
+
+    /////////////////////////
+    // ENDPOINTS DA FASE 2 //
+    /////////////////////////
+
+    
 }
