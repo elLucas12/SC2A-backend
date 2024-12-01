@@ -3,7 +3,6 @@ import { AssinaturasRepositoryORM } from "../../adaptInterface/Persistence/Repos
 import { ClientesRepositoryORM } from "../../adaptInterface/Persistence/Repositories/ClientesORM.repository";
 import { AplicativosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/AplicativosORM.repository";
 import { UsuariosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/UsuariosORM.repository";
-import { Observer } from "../Observer";
 
 /**
  * Serviço de manunteção de cadastros e de operações relativas à cobrança.
@@ -15,7 +14,7 @@ import { Observer } from "../Observer";
     AplicativosRepositoryORM,
     UsuariosRepositoryORM
 )
-export class ServicoCadastramento extends Observer {
+export class ServicoCadastramento {
     #assinaturasRepository;
     #clientesRepository;
     #aplicativosRepository;
@@ -27,24 +26,6 @@ export class ServicoCadastramento extends Observer {
         this.#clientesRepository = clienteRepository;
         this.#aplicativosRepository = aplicativosRepository;
         this.#usuariosRepository = usuariosRepository;
-    }
-
-    /**
-     * Ações ao receber notificação do Observer registrado (PagamentosRepo).
-     * 
-     * Fundamentalmente, realiza-se verificações de existência da assinatura e 
-     * altera-se a válidade da mesma conforme pagamento.
-     * 
-     * @param {Pagamento} pagamento Objeto modelo do pagamento realizado.
-     */
-    notifica(pagamento) {
-        this.#assinaturasRepository.atualizarAssinatura({
-            codigo: pagamento.assinatura.codigo,
-            aplicativo: pagamento.assinatura.aplicativo,
-            cliente: pagamento.assinatura.cliente,
-            inicioVigencia: pagamento.assinatura.inicioVigencia,
-            fimVigencia: pagamento.assinatura.fimVigencia
-        });
     }
 
     /**
