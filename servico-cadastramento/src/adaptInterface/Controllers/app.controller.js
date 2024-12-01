@@ -1,4 +1,4 @@
-import { Controller, Dependencies, Get, Post, Patch, Bind, Body, Param } from '@nestjs/common';
+import { Controller, Dependencies, Get, Post, Patch, Bind, Body, Param, NotFoundException } from '@nestjs/common';
 import { ClientesCadastrados_UC } from '../../aplication/ClientesCadastrados';
 import { AplicativosCadastrados_UC } from '../../aplication/AplicativosCadastrados';
 import { RegistraAssinatura_UC } from '../../aplication/RegistraAssinatura';
@@ -10,6 +10,7 @@ import { RegistraCliente_UC } from '../../aplication/RegistraCliente';
 import { RegistraUsuario_UC } from '../../aplication/RegistraUsuario';
 import { RegistraAplicativo_UC } from '../../aplication/RegistraAplicativo';
 import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
+import { AssinaturaInexistenteError } from '../Persistence/Exceptions/AssinaturaInexistenteError';
 
 @Controller()
 @Dependencies(
@@ -221,6 +222,15 @@ export class AppController {
     @Get('servcad/assinaturas/id/:idAssinatura')
     @Bind(Param())
     async getAssinaturaPorId(param) {
-        return this.assinaturaPorCodigoUC.run(param.idAssinatura);
+        try {
+            return this.assinaturaPorCodigoUC.run(param.idAssinatura);
+        } catch (error) {
+            if (error instanceof AssinaturaInexistenteError) {
+                throw new NotFoundException('ID de assinatura inválido', {
+                    cause: error
+                });
+            }
+            throw error;
+        }
     }
 }

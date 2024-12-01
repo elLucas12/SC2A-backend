@@ -7,6 +7,7 @@ import { IAssinaturasModelRepository } from '../../../domain/repositories/IAssin
 import { AplicativoModel } from '../../../domain/entities/Aplicativo.model';
 import { ClienteModel } from '../../../domain/entities/Cliente.model';
 import { AssinaturaModel } from '../../../domain/entities/Assinatura.model';
+import { AssinaturaInexistenteError } from '../Exceptions/AssinaturaInexistenteError';
 
 /**
  * Representa o tipo de assinatura dentro do contexto de válidade das regras de negócio.
@@ -173,6 +174,8 @@ export class AssinaturasRepositoryORM extends IAssinaturasModelRepository {
                 codigo: codigo
             }
         });
+        if (resp === undefined) 
+            throw new AssinaturaInexistenteError('Assinatura inexistente');
         return AssinaturasRepositoryORM.createFromObject(resp);
     }
 
