@@ -9,6 +9,7 @@ import { AssinaturasAplicativo_UC } from '../../aplication/AssinaturasAplicativo
 import { RegistraCliente_UC } from '../../aplication/RegistraCliente';
 import { RegistraUsuario_UC } from '../../aplication/RegistraUsuario';
 import { RegistraAplicativo_UC } from '../../aplication/RegistraAplicativo';
+import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
 
 @Controller()
 @Dependencies(
@@ -21,7 +22,8 @@ import { RegistraAplicativo_UC } from '../../aplication/RegistraAplicativo';
     AssinaturasAplicativo_UC,
     RegistraCliente_UC,
     RegistraUsuario_UC,
-    RegistraAplicativo_UC
+    RegistraAplicativo_UC,
+    AssinaturaPorCodigo_UC
 )
 export class AppController {
     constructor(
@@ -34,7 +36,8 @@ export class AppController {
         assinaturasAplicativoUC,
         registraClienteUC,
         registraUsuarioUC,
-        registraAplicativoUC
+        registraAplicativoUC,
+        assinaturaPorCodigoUC
     ) {
         this.clientesCadastradosUC = clientesCadastradosUC;
         this.aplicativosCadastradosUC = aplicativosCadastradosUC;
@@ -47,6 +50,8 @@ export class AppController {
         this.registraClienteUC = registraClienteUC;
         this.registraUsuarioUC = registraUsuarioUC;
         this.registraAplicativoUC = registraAplicativoUC;
+
+        this.assinaturaPorCodigoUC = assinaturaPorCodigoUC;
     }
 
     /////////////////////////
@@ -208,5 +213,14 @@ export class AppController {
     // ENDPOINTS DA FASE 2 //
     /////////////////////////
 
-    
+    /**
+     * Realiza uma consulta e retorna a assinatura através do ID especificado.
+     * @param {Array} param Lista de parâmetros, especificando o código (ID) da assinatura.
+     * @return Objeto modelo da assinatura ou 'undefined' caso assinatura não exista.
+     */
+    @Get('servcad/assinaturas/id/:idAssinatura')
+    @Bind(Param())
+    async getAssinaturaPorId(param) {
+        return this.assinaturaPorCodigoUC.run(param.idAssinatura);
+    }
 }

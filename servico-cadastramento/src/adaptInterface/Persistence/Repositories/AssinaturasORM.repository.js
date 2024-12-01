@@ -162,6 +162,21 @@ export class AssinaturasRepositoryORM extends IAssinaturasModelRepository {
     }
 
     /**
+     * Consulta a assinatura referente ao código passado.
+     * 
+     * @param {Number} codigo Código de referência da assinatura.
+     * @return Objeto modelo da respectiva assinatura.
+     */
+    async consultarPorId(codigo) {
+        const resp = await this.#assinaturasRepo.find({
+            where: {
+                codigo: codigo
+            }
+        });
+        return AssinaturasRepositoryORM.createFromObject(resp);
+    }
+
+    /**
      * Recebe os parâmetros de origem da entidade Assinatura e retorna o objeto construido.
      * 
      * @param {*} param0 Parâmetros de construção da entidade Assinatura.

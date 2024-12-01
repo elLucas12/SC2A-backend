@@ -33,6 +33,7 @@ import { RegistraAssinatura_UC } from '../../aplication/RegistraAssinatura';
 import { RegistraCliente_UC } from '../../aplication/RegistraCliente';
 import { RegistraUsuario_UC } from '../../aplication/RegistraUsuario';
 import { RegistraAplicativo_UC } from '../../aplication/RegistraAplicativo';
+import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
 
 @Module({
   imports: [
@@ -82,7 +83,8 @@ import { RegistraAplicativo_UC } from '../../aplication/RegistraAplicativo';
     RegistraAssinatura_UC,
     RegistraCliente_UC,
     RegistraUsuario_UC,
-    RegistraAplicativo_UC
+    RegistraAplicativo_UC,
+    AssinaturaPorCodigo_UC
   ],
 })
 export class AppModule {}

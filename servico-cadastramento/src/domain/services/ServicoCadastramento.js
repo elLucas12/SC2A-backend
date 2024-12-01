@@ -108,6 +108,15 @@ export class ServicoCadastramento extends Observer {
     }
 
     /**
+     * Retorna um objeto modelo montado da entidade Assinatura de acordo com o ID passado.
+     * @param {Number} codigo Código identificador da instância de Assinatura.
+     * @return Objeto modelo da entidade Assinatura.
+     */
+    async assinaturaPorId(codigo) {
+        return this.#aplicativosRepository.consultarPorId(codigo);
+    }
+
+    /**
      * Consulta todas as assinaturas do aplicativo presentes no banco de dados do sistema.
      * 
      * @param {Number} codigo Referência do aplicativo no banco.
