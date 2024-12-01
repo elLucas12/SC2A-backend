@@ -1,4 +1,5 @@
 import { Controller, Dependencies, Get, Post, Patch, Bind, Body, Param, NotFoundException } from '@nestjs/common';
+import { EventPattern } from '@nestjs/common';
 import { ClientesCadastrados_UC } from '../../aplication/ClientesCadastrados';
 import { AplicativosCadastrados_UC } from '../../aplication/AplicativosCadastrados';
 import { RegistraAssinatura_UC } from '../../aplication/RegistraAssinatura';
@@ -11,6 +12,7 @@ import { RegistraUsuario_UC } from '../../aplication/RegistraUsuario';
 import { RegistraAplicativo_UC } from '../../aplication/RegistraAplicativo';
 import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
 import { AssinaturaInexistenteError } from '../Persistence/Exceptions/AssinaturaInexistenteError';
+import { ConsumirEventoPagamento_UC } from '../../aplication/ConsumirEventoPagamento';
 
 @Controller()
 @Dependencies(
@@ -24,7 +26,8 @@ import { AssinaturaInexistenteError } from '../Persistence/Exceptions/Assinatura
     RegistraCliente_UC,
     RegistraUsuario_UC,
     RegistraAplicativo_UC,
-    AssinaturaPorCodigo_UC
+    AssinaturaPorCodigo_UC,
+    ConsumirEventoPagamento_UC
 )
 export class AppController {
     constructor(
@@ -38,7 +41,8 @@ export class AppController {
         registraClienteUC,
         registraUsuarioUC,
         registraAplicativoUC,
-        assinaturaPorCodigoUC
+        assinaturaPorCodigoUC,
+        consumirEventoPagamentoUC
     ) {
         this.clientesCadastradosUC = clientesCadastradosUC;
         this.aplicativosCadastradosUC = aplicativosCadastradosUC;
@@ -53,6 +57,7 @@ export class AppController {
         this.registraAplicativoUC = registraAplicativoUC;
 
         this.assinaturaPorCodigoUC = assinaturaPorCodigoUC;
+        this.consumirEventoPagamentoUC = consumirEventoPagamentoUC;
     }
 
     /////////////////////////
@@ -232,5 +237,10 @@ export class AppController {
             }
             throw error;
         }
+    }
+
+    @EventPattern('ServicoCadastramento')
+    async eventoPagamento(dados) {
+        this.consumirEventoPagamentoUC.run(dados);
     }
 }

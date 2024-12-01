@@ -1,8 +1,9 @@
-import { Injectable, Dependencies } from "@nestjs/common";
+import { Injectable, Dependencies, NotFoundException } from "@nestjs/common";
 import { AssinaturasRepositoryORM } from "../../adaptInterface/Persistence/Repositories/AssinaturasORM.repository";
 import { ClientesRepositoryORM } from "../../adaptInterface/Persistence/Repositories/ClientesORM.repository";
 import { AplicativosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/AplicativosORM.repository";
 import { UsuariosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/UsuariosORM.repository";
+import { ValorInvalidoPagamento } from "../../adaptInterface/Persistence/Exceptions/ValorInvalidoPagamento";
 
 /**
  * Serviço de manunteção de cadastros e de operações relativas à cobrança.
@@ -66,6 +67,16 @@ export class ServicoCadastramento {
      */
     async atualizarCusto(codigo, custo) {
         return this.#aplicativosRepository.atualizarCusto(codigo, custo);
+    }
+
+    /**
+     * Procura e substitui uma instância de Assinatura registrada no sistema.
+     * 
+     * @param {Assinatura} assinatura Objeto assinatura novo.
+     * @return Objeto modelo da Assinatura já atualizado.
+     */
+    async atualizarAssinatura(assinatura) {
+        return this.#assinaturasRepository.atualizarAssinatura(assinatura);
     }
 
     /**
@@ -135,5 +146,43 @@ export class ServicoCadastramento {
      */
     async criarAplicativo(aplicativo) {
         return this.#aplicativosRepository.registrar(aplicativo);
+    }
+
+    async consumirPagamento(assinatura, valorPago, dataPagamento) {
+        // Obtendo objeto de assinatura relativo ao pagamento
+        let assinaturaAlvo;
+        try {
+            assinaturaAlvo = await this.assinaturaPorId(assinatura);
+        } catch (error) {
+            if (error instanceof AssinaturaInexistenteError) {
+                throw new NotFoundException("Pagamento feito para Assinatura inexistente", {
+                    cause: error
+                });
+            }
+            throw new Error(`Erro ao consumir evento de pagamento. ${error}`);
+        }
+
+        if (assinaturaAlvo.aplicativo.custoMensal <= valorPago) {
+            // Criando novo prazo de vigência
+            let fimVigenciaDate = new Date(assinaturaAlvo.fimVigencia.replace(' ', 'T'));
+            let dataPagamentoDate = new Date(dataPagamento.replace(' ', 'T'));
+            let newFimVigenciaDate = new Date();
+
+            if (fimVigenciaDate >= dataPagamentoDate)
+                newFimVigenciaDate.setDate(fimVigenciaDate.getDate() + 30);
+            else
+                newFimVigenciaDate.setDate(dataPagamentoDate.getDate() + 30);
+            
+            // Registrando novo prazo
+            this.atualizarAssinatura({
+                codigo: assinaturaAlvo.codigo,
+                aplicativo: assinaturaAlvo.aplicativo,
+                cliente: assinaturaAlvo.cliente,
+                inicioVigencia: assinaturaAlvo.inicioVigencia,
+                fimVigencia: newFimVigenciaDate.toJSON().slice(0, 19).replace('T', ' ')
+            });
+        } else {
+            throw new ValorInvalidoPagamento("Valor pago é menor que o valor da mensalidade");
+        }
     }
 }

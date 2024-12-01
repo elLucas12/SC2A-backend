@@ -7,7 +7,8 @@ import { AppController } from './app.controller';
 import { CacheAssinatura } from '../persistence/entities/CacheAssinatura.entity';
 import { ServicoAssinaturasValidas } from '../../domain/ServicoAssinaturasValidas';
 import { CacheAssinaturasRepositoryORM } from '../persistence/repositories/CacheAssinaturasORM.repository';
-import { AssinaturaAtivaUC } from '../../aplication/AssinaturaAtiva';
+import { AssinaturaAtiva_UC } from '../../aplication/AssinaturaAtiva';
+import { ConsumirEventoPagamento_UC } from '../../aplication/ConsumirEventoPagamento';
 
 @Module({
   imports: [
@@ -38,7 +39,8 @@ import { AssinaturaAtivaUC } from '../../aplication/AssinaturaAtiva';
   providers: [
     ServicoAssinaturasValidas,
     CacheAssinaturasRepositoryORM,
-    AssinaturaAtivaUC
+    AssinaturaAtiva_UC,
+    ConsumirEventoPagamento_UC
   ],
 })
 export class AppModule {}

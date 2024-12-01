@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
 import { AppController } from './app.controller';
 
 import { Aplicativo } from '../Persistence/Entities/Aplicativo.entity';
@@ -31,10 +32,13 @@ import { RegistraCliente_UC } from '../../aplication/RegistraCliente';
 import { RegistraUsuario_UC } from '../../aplication/RegistraUsuario';
 import { RegistraAplicativo_UC } from '../../aplication/RegistraAplicativo';
 import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
+import { ConsumirEventoPagamento_UC } from '../../aplication/ConsumirEventoPagamento';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService) => ({
@@ -55,7 +59,8 @@ import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
       Assinatura,
       Cliente,
       Usuario
-    ])
+    ]),
+    HttpModule
   ],
   controllers: [AppController],
   providers: [
@@ -78,7 +83,8 @@ import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
     RegistraCliente_UC,
     RegistraUsuario_UC,
     RegistraAplicativo_UC,
-    AssinaturaPorCodigo_UC
+    AssinaturaPorCodigo_UC,
+    ConsumirEventoPagamento_UC
   ],
 })
 export class AppModule {}

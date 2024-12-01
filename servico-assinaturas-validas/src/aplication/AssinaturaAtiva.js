@@ -3,7 +3,7 @@ import { ServicoAssinaturasValidas } from '../domain/ServicoAssinaturasValidas';
 
 @Injectable()
 @Dependencies(ServicoAssinaturasValidas)
-export class AssinaturaAtivaUC {
+export class AssinaturaAtiva_UC {
     constructor(servicoAssinaturasValidas) {
         this.servicoAssinaturasValidas = servicoAssinaturasValidas;
     }

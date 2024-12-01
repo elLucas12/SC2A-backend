@@ -17,11 +17,11 @@ export class CacheAssinaturasRepositoryORM extends ICacheAssinaturasModelReposit
     /**
      * Registra uma instância de cache no banco.
      * 
-     * @param {CacheAssinatura} cache Objeto de cache a ser armazenado.
+     * @param {CacheAssinatura} cacheAssinatura Objeto de cache a ser armazenado.
      * @return Objeto de cache construido (CacheAssinaturaModel).
      */
-    async registrar(cache) {
-        const resp = await this.#cacheAssinaturasRepo.save(cache);
+    async registrar(cacheAssinatura) {
+        const resp = await this.#cacheAssinaturasRepo.save(cacheAssinatura);
         return CacheAssinaturasRepositoryORM.createFromObject(resp);
     }
 

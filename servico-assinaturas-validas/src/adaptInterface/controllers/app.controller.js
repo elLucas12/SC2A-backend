@@ -1,17 +1,20 @@
 import { Controller, Dependencies, Get, Bind, Param } from '@nestjs/common';
 import { EventPattern } from '@nestjs/microservices';
 import { ServicoAssinaturasValidas } from '../../domain/ServicoAssinaturasValidas';
-import { AssinaturaAtivaUC } from '../../aplication/AssinaturaAtiva';
+import { AssinaturaAtiva_UC } from '../../aplication/AssinaturaAtiva';
+import { ConsumirEventoPagamento_UC } from '../../aplication/ConsumirEventoPagamento';
 
 @Controller()
 @Dependencies(
   ServicoAssinaturasValidas,
-  AssinaturaAtivaUC
+  AssinaturaAtiva_UC,
+  ConsumirEventoPagamento_UC
 )
 export class AppController {
-  constructor(servicoAssinaturasValidas, assinaturaAtivaUC) {
+  constructor(servicoAssinaturasValidas, assinaturaAtivaUC, consumirEventoPagamentoUC) {
     this.servicoAssinaturasValidas = servicoAssinaturasValidas;
     this.assinaturaAtivaUC = assinaturaAtivaUC;
+    this.consumirEventoPagamentoUC = consumirEventoPagamentoUC;
   }
 
   /**
@@ -26,8 +29,15 @@ export class AppController {
     return this.assinaturaAtivaUC.run(param.idAssinatura);
   }
 
+  /**
+   * Ações sobre o evento de pagamento do ServicoPagamentos.
+   * 
+   * Ocorre a atualização do cache de assinaturas conforme o pagamento realizado.
+   * 
+   * @param {Array} dados Dados do payload do evento.
+   */
   @EventPattern('ServicoAssinaturasValidas')
-  eventoPagamento(dados) {
-    console.log(dados);
+  async eventoPagamento(dados) {
+    this.consumirEventoPagamentoUC.run(dados);
   }
 }

@@ -82,6 +82,16 @@ export class ServicoAssinaturasValidas {
     }
 
     /**
+     * Remove uma assinatura do banco do sistema conforme seu identificador.
+     * 
+     * @param {Number} cacheAssinatura Código da assinatura a ser deletada.
+     * @return Objeto modelo da assinatura deletada.
+     */
+    async deletarCacheAssinatura(cacheAssinatura) {
+        return await this.#cacheAssinaturasRepository.deletar(cacheAssinatura);
+    }
+
+    /**
      * Requisita uma assinatura no ServicoCadastramento e retorna-a.
      * 
      * @param {Number} assinatura Código de identificação da assinatura.
