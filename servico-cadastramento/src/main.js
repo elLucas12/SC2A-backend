@@ -1,4 +1,5 @@
 import { NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
 import { AppModule } from './adaptInterface/Controllers/app.module';
 
 async function bootstrap() {

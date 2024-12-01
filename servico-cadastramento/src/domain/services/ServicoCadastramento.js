@@ -22,7 +22,6 @@ export class ServicoCadastramento {
     #usuariosRepository;
 
     constructor(assinaturasRepository, clienteRepository, aplicativosRepository, usuariosRepository) {
-        super();
         this.#assinaturasRepository = assinaturasRepository;
         this.#clientesRepository = clienteRepository;
         this.#aplicativosRepository = aplicativosRepository;

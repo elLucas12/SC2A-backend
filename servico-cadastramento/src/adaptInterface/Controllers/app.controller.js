@@ -1,5 +1,5 @@
 import { Controller, Dependencies, Get, Post, Patch, Bind, Body, Param, NotFoundException } from '@nestjs/common';
-import { EventPattern } from '@nestjs/common';
+import { EventPattern } from '@nestjs/microservices';
 import { ClientesCadastrados_UC } from '../../aplication/ClientesCadastrados';
 import { AplicativosCadastrados_UC } from '../../aplication/AplicativosCadastrados';
 import { RegistraAssinatura_UC } from '../../aplication/RegistraAssinatura';
@@ -239,6 +239,11 @@ export class AppController {
         }
     }
 
+    /**
+     * Handler de ações sobrre evento de pagamento lançado pelo serviço de pagamentos.
+     * 
+     * @param {Array} dados Dados passados pelo ServicoPagamento em forma de evento.
+     */
     @EventPattern('ServicoCadastramento')
     async eventoPagamento(dados) {
         this.consumirEventoPagamentoUC.run(dados);
