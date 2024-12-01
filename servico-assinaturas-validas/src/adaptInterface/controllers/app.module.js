@@ -11,7 +11,9 @@ import { AssinaturaAtivaUC } from '../../aplication/AssinaturaAtiva';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true // uso em serv.
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService) => ({
