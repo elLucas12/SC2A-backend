@@ -7,18 +7,15 @@ import { Aplicativo } from '../Persistence/Entities/Aplicativo.entity';
 import { Assinatura } from '../Persistence/Entities/Assinatura.entity';
 import { Cliente } from '../Persistence/Entities/Cliente.entity';
 import { Usuario } from '../Persistence/Entities/Usuario.entity';
-import { Pagamento } from '../Persistence/Entities/Pagamento.entity';
 
 import { IAplicativosModelRepository } from '../../domain/repositories/IAplicativosModel.repository';
 import { IAssinaturasModelRepository } from '../../domain/repositories/IAssinaturasModel.repository';
 import { IClientesModelRepository } from '../../domain/repositories/IClientesModel.repository';
-import { IPagamentosModelRepository } from '../../domain/repositories/IPagamentosModel.repository';
 import { IUsuariosModelRepository } from '../../domain/repositories/IUsuariosModel.repository';
 
 import { AplicativosRepositoryORM } from '../Persistence/Repositories/AplicativosORM.repository';
 import { AssinaturasRepositoryORM } from '../Persistence/Repositories/AssinaturasORM.repository';
 import { ClientesRepositoryORM } from '../Persistence/Repositories/ClientesORM.repository';
-import { PagamentosRepositoryORM } from '../Persistence/Repositories/PagamentosORM.repository';
 import { UsuariosRepositoryORM } from '../Persistence/Repositories/UsuariosORM.repository';
 
 import { ServicoCadastramento } from '../../domain/services/ServicoCadastramento';
@@ -57,7 +54,6 @@ import { AssinaturaPorCodigo_UC } from '../../aplication/AssinaturaPorCodigo';
       Aplicativo,
       Assinatura,
       Cliente,
-      Pagamento,
       Usuario
     ])
   ],
