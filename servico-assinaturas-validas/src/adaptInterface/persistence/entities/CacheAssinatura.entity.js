@@ -1,19 +1,13 @@
-import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity('CacheAssinatura')
 export class CacheAssinatura {
-    @PrimaryColumn('int')
+    @PrimaryGeneratedColumn()
     codigo;
 
     @Column('int')
-    aplicativo;
+    assinatura;
 
-    @Column('int')
-    cliente;
-
-    @Column('date')
-    inicioVigencia;
-
-    @Column('date')
-    fimVigencia;
+    @Column('boolean')
+    isValid;
 }

@@ -211,7 +211,7 @@ export class AppController {
      */
     @Post('servcad/aplicativos/registrar')
     @Bind(Body())
-    async postCriaUsuario(dados) {
+    async postCriaAplicativo(dados) {
         return this.registraAplicativoUC.run(dados);
     }
 

@@ -5,8 +5,9 @@ export class EventoPagamentoServicoCadastramento extends EventoModel {
     #payload;
 
     constructor(payload) {
+        super();
         this.#payload = payload;
-        this.#pattern = 'servicoCadastramento';
+        this.#pattern = 'ServicoCadastramento';
     }
 
     get pattern() {

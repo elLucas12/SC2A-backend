@@ -5,8 +5,9 @@ export class EventoPagamentoServicoAssinaturasValidas extends EventoModel {
     #pattern;
 
     constructor(payload) {
+        super();
         this.#payload = payload;
-        this.#pattern = 'servicoAssinaturasValidas';
+        this.#pattern = 'ServicoAssinaturasValidas';
     }
 
     get pattern() {

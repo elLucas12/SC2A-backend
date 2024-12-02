@@ -49,7 +49,7 @@ export class ServicoPagamentos {
             // Emite alerta de evento para ServicoAssinaturasValidas
             this.emitirEvento(new EventoPagamentoServicoAssinaturasValidas({
                 assinatura: pagamento.assinatura
-            }))
+            }));
         }
         return resp;
     }

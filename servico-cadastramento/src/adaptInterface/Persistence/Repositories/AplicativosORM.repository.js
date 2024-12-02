@@ -58,7 +58,7 @@ export class AplicativosRepositoryORM extends IAplicativosModelRepository {
      */
     async consultarPorCodigo(codigo) {
         const resp = await this.#aplicativosRepo.findOneBy({codigo});
-        return AplicativosRepositoryORM.createFromObject(resp);
+        return resp.map(AplicativosRepositoryORM.createFromObject);
     }
 
     /**

@@ -1,10 +1,10 @@
 {
   "name": "servico-pagamentos",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Serviço de gerenciamento de pagamentos do módulo de backend do SC2A",
+  "author": "Lucas Zunho",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "BSD-3-Clause",
   "scripts": {
     "format": "prettier --write \"**/*.js\"",
     "start": "babel-node index.js",

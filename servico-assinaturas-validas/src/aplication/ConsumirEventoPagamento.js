@@ -11,6 +11,6 @@ export class ConsumirEventoPagamento_UC {
     }
 
     async run(dados) {
-        return await this.#servicoAssinaturasValidas.deletarCacheAssinaturas(dados.assinatura);
+        return await this.#servicoAssinaturasValidas.deletarCacheAssinatura(dados.assinatura);
     }
 }

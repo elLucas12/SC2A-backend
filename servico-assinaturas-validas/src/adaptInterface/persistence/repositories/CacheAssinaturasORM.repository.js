@@ -31,8 +31,13 @@ export class CacheAssinaturasRepositoryORM extends ICacheAssinaturasModelReposit
      * @param {Number} codigo Código do cache a ser deletado.
      * @return Objeto de cache construido (CacheAssinaturaModel).
      */
-    async deletar(codigo) {
-        const resp = await this.#cacheAssinaturasRepo.delete(codigo);
+    async deletar(codigo, porAssinatura=true) {
+        const resp = await this.#cacheAssinaturasRepo
+            .createQueryBuilder()
+            .delete()
+            .from(CacheAssinatura)
+            .where(porAssinatura ? ("assinatura = :assinatura", { assinatura: codigo }) : ("codigo = :codigo", { codigo: codigo }))
+            .execute();
         return CacheAssinaturasRepositoryORM.createFromObject(resp);
     }
 
@@ -52,15 +57,12 @@ export class CacheAssinaturasRepositoryORM extends ICacheAssinaturasModelReposit
      * @return Objeto modelo de CacheAssinatura referente à consulta ou 'undefined' (perda).
      */
     async consultarPorAssinatura(assinatura) {
-        const resp = this.#cacheAssinaturasRepo.find({
+        const resp = await this.#cacheAssinaturasRepo.find({
             where: {
                 assinatura: assinatura
             }
         });
-        if (resp)
-            return CacheAssinaturasRepositoryORM.createFromObject(resp);
-        else
-            return undefined;
+        return resp.map(CacheAssinaturasRepositoryORM.createFromObject);
     }
 
     /**
@@ -69,13 +71,11 @@ export class CacheAssinaturasRepositoryORM extends ICacheAssinaturasModelReposit
      * @param {*} param0 Parâmetros de construção da entidade CacheAssinatura.
      * @return Retorna o objeto CacheAssinaturaModel construido.
      */
-    static createFromObject({ codigo, aplicativo, cliente, inicioVigencia, fimVigencia }) {
+    static createFromObject({ codigo, assinatura, isValid }) {
         return( new CacheAssinaturaModel(
             codigo,
-            aplicativo,
-            cliente,
-            inicioVigencia,
-            fimVigencia
+            assinatura,
+            isValid
         ));
     }
 }

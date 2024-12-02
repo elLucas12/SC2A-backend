@@ -5,12 +5,14 @@ import { ServicoPagamentos } from '../domain/ServicoPagamentos';
 @Injectable()
 @Dependencies(ServicoPagamentos)
 export class RegistraPagamentoUC {
+    #servicoPagamentos;
+
     constructor (servicoPagamentos) {
         validate(servicoPagamentos, ServicoPagamentos);
-        this.servicoPagamentos = servicoPagamentos;
+        this.#servicoPagamentos = servicoPagamentos;
     }
 
     run(dados) {
-        return this.servicoPagamentos.registrarPagamento(dados);
+        return this.#servicoPagamentos.registrarPagamento(dados);
     }
 }

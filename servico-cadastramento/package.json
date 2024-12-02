@@ -1,10 +1,10 @@
 {
-  "name": "sc2a",
+  "name": "servico-cadastramento",
   "version": "0.0.1",
   "description": "Módulo backend do Sistema de Controle de Assinaturas de Aplicativos",
   "author": "Lucas Zunho",
   "private": true,
-  "license": "BSD3",
+  "license": "BSD-3-Clause",
   "scripts": {
     "format": "prettier --write \"**/*.js\"",
     "start": "babel-node index.js",

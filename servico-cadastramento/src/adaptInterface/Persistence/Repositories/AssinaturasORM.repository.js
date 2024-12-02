@@ -77,11 +77,11 @@ export class AssinaturasRepositoryORM extends IAssinaturasModelRepository {
      * @return Obj. de modelo da entidade Assinatura.
      */
     async atualizarAssinatura(assinatura) {
-        let codigoAssinatura = assinatura.codigo;
-        let assinaturaAlvo = await this.#assinaturasRepo.findOneBy({codigoAssinatura});
+        let codigo = assinatura.codigo;
+        let assinaturaAlvo = await this.#assinaturasRepo.findOneBy({codigo});
         if (assinaturaAlvo !== undefined) {
             const resp = await this.#assinaturasRepo.save(assinatura); // substitui a assinatura do repo.
-            return AplicativosRepositoryORM.createFromObject(resp);
+            return AssinaturasRepositoryORM.createFromObject(resp);
         } 
     }
 
@@ -92,8 +92,12 @@ export class AssinaturasRepositoryORM extends IAssinaturasModelRepository {
      * @returns Obj. AssinaturaEntity pesquisado.
      */
     async consultarPorCodigo(codigo) {
-        const resp = await this.#assinaturasRepo.findOneBy({codigo});
-        return AssinaturasRepositoryORM.createFromObject(resp);
+        const resp = await this.#assinaturasRepo.find({
+            where: {
+                codigo: codigo
+            }
+        });
+        return resp.map(AssinaturasRepositoryORM.createFromObject);
     }
 
     /**

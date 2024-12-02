@@ -22,7 +22,7 @@ export class UsuariosRepositoryORM extends IUsuariosModelRepository {
      * @return Status de sucesso da ação.
      */
     async registrar(usuario) {
-        const rest = await this.#usuariosRepo.save(usuario);
+        const resp = await this.#usuariosRepo.save(usuario);
         return UsuariosRepositoryORM.createFromObject(resp);
     }
 

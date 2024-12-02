@@ -15,6 +15,13 @@ export class AssinaturaPorCodigo_UC {
      * @param {Number} assinatura Código de indentificação da assinatura no banco.
      */
     async run(assinatura) {
-        return await this.#servicoCadastramento.assinaturaPorId(assinatura);
+        const assinaturaModel = (await this.#servicoCadastramento.assinaturaPorId(assinatura))[0];
+        return {
+            codigo: assinaturaModel.codigo,
+            aplicativo: assinaturaModel.aplicativo.codigo,
+            cliente: assinaturaModel.cliente.codigo,
+            inicioVigencia: assinaturaModel.inicioVigencia,
+            fimVigencia: assinaturaModel.fimVigencia
+        };
     }
 }

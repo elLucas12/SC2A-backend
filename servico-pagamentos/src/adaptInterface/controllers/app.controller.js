@@ -1,4 +1,4 @@
-import { Controller, Dependencies, Post } from '@nestjs/common';
+import { Controller, Dependencies, Bind, Body, Post } from '@nestjs/common';
 import { RegistraPagamentoUC } from '../../aplication/RegistraPagamento';
 
 @Controller()
@@ -18,6 +18,7 @@ export class AppController {
    * @return Nada.
    */
   @Post('/registrarpagamento')
+  @Bind(Body())
   async postRegistrarPagamento(dados) {
     return this.registraPagamentoUC.run(dados);
   }

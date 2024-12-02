@@ -4,6 +4,7 @@ import { ClientesRepositoryORM } from "../../adaptInterface/Persistence/Reposito
 import { AplicativosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/AplicativosORM.repository";
 import { UsuariosRepositoryORM } from "../../adaptInterface/Persistence/Repositories/UsuariosORM.repository";
 import { ValorInvalidoPagamento } from "../../adaptInterface/Persistence/Exceptions/ValorInvalidoPagamento";
+import { AssinaturaInexistenteError } from "../../adaptInterface/Persistence/Exceptions/AssinaturaInexistenteError";
 
 /**
  * Serviço de manunteção de cadastros e de operações relativas à cobrança.
@@ -104,7 +105,11 @@ export class ServicoCadastramento {
      * @return Objeto modelo da entidade Assinatura.
      */
     async assinaturaPorId(codigo) {
-        return this.#aplicativosRepository.consultarPorId(codigo);
+        const resp = await this.#assinaturasRepository.consultarPorCodigo(codigo);
+        if (Array.isArray(resp) && !resp.length) {
+            throw new AssinaturaInexistenteError('Consulta de assinatura retornou nulo');
+        }
+        return resp;
     }
 
     /**
@@ -151,7 +156,7 @@ export class ServicoCadastramento {
         // Obtendo objeto de assinatura relativo ao pagamento
         let assinaturaAlvo;
         try {
-            assinaturaAlvo = await this.assinaturaPorId(assinatura);
+            assinaturaAlvo = (await this.assinaturaPorId(assinatura))[0];
         } catch (error) {
             if (error instanceof AssinaturaInexistenteError) {
                 throw new NotFoundException("Pagamento feito para Assinatura inexistente", {
@@ -161,8 +166,10 @@ export class ServicoCadastramento {
             throw new Error(`Erro ao consumir evento de pagamento. ${error}`);
         }
 
-        if (assinaturaAlvo.aplicativo.custoMensal <= valorPago) {
+        console.log("custoMensal=", assinaturaAlvo.aplicativo.custoMensal, "\nvalorPago=", valorPago);
+        if (parseFloat(assinaturaAlvo.aplicativo.custoMensal) === valorPago) {
             // Criando novo prazo de vigência
+            console.log(assinatura, "+ ", dataPagamento, "+ ", valorPago);
             let fimVigenciaDate = new Date(assinaturaAlvo.fimVigencia.replace(' ', 'T'));
             let dataPagamentoDate = new Date(dataPagamento.replace(' ', 'T'));
             let newFimVigenciaDate = new Date();
@@ -181,7 +188,7 @@ export class ServicoCadastramento {
                 fimVigencia: newFimVigenciaDate.toJSON().slice(0, 19).replace('T', ' ')
             });
         } else {
-            throw new ValorInvalidoPagamento("Valor pago é menor que o valor da mensalidade");
+            throw new ValorInvalidoPagamento("Valor pago difere do valor da mensalidade");
         }
     }
 }
