@@ -50,12 +50,11 @@ BASEURL_CADASTRAMENTO="http://localhost:3000/servcad"
 
 ### Populando o Banco de Dados
 
-Para popular o banco de dados é necessário executar o comando de população na raíz do diretório 
-'ServicoCadastramento', conforme a seguir:
+Para popular o banco de dados é necessário executar o comando de população na raíz do repositório, conforme
+a seguir:
 
 ```bash
-$ cd ./ServicoCadastramento/ \
-    npm run startup-requests
+$ npm run startup-requests
 ```
 
 > O comando deve ser executado em paralelo com a API completa (`npm start` para dev., ou outra
