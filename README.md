@@ -25,9 +25,28 @@ $ cd ./ServicoAssinaturasValidas/ \
     npm start
 ```
 
-> OBS.: Para qualquer método de inicialização do projeto, deve-se realizar a configuração de cada serviço
-> por meio de seus respectivos arquivos `.env`. *Caso contrário, ocorrerá exceções logo na inicialização
-> ou, em piores casos, no ambinte de produção*.
+### Arquivos de Environment
+
+Para qualquer método de inicialização do projeto, deve-se realizar a configuração de cada serviço
+por meio de seus respectivos arquivos `.env`. *Caso contrário, ocorrerá exceções logo na inicialização
+ou, em piores casos, no ambinte de produção*.
+
+- Todos os serviços deverão ter uma configuração de banco específica, conforme esta:
+
+```env
+DB_HOST="127.0.0.1"
+DB_PORT=3306
+DB_USERNAME="auser"
+DB_PASSWORD="apass"
+DB_NAME="sc2a_db"
+```
+
+- Além disso, o serviço de assinaturas válidas (`ServicoAssinaturasValidas`) deverá ter, adicionalmente, a
+seguinte variável (especificando a URL do serviço de cadastramento - `ServicoCadastramento`):
+
+```env
+BASEURL_CADASTRAMENTO="http://localhost:3000/servcad"
+```
 
 ### Populando o Banco de Dados
 
