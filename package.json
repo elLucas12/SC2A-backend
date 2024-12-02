@@ -1,0 +1,23 @@
+{
+  "name": "sc2a-backend",
+  "version": "1.0.0",
+  "description": "Módulo backend do projeto SC2A",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "startup-requests": "node ./startupRequests.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elLucas12/SC2A-backend.git"
+  },
+  "author": "Lucas Zunho",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/elLucas12/SC2A-backend/issues"
+  },
+  "homepage": "https://github.com/elLucas12/SC2A-backend#readme",
+  "dependencies": {
+    "axios": "^1.7.8",
+    "http": "^0.0.1-security"
+  }
+}
