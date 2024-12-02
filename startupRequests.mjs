@@ -112,6 +112,15 @@ const assinaturas = [
 axios.defaults.httpAgent = new http.Agent({keepAlive: false})
 
 try {
+    console.log("[REG} => ", usuario);
+    let res = await axios.post(baseurl + "/servcad/usuarios/registrar", usuario);
+    console.log("[RESPOSTA] => ", res.headers['content-type'], res.config.data);
+} catch (error) {
+    console.error("[ERRO] na adição de USUARIO na API. ", error);
+    process.exit(1);
+}
+
+try {
     for (let cli of clientes) {
         console.log("[REG] => ", cli);
         let res = await axios.post(baseurl + "/servcad/clientes/registrar", cli);
